@@ -1,28 +1,36 @@
+import { Link, Outlet, useParams } from "react-router-dom";
+import { directors } from "./DirectorList";
 
 function DirectorCard() {
-    // Replace me
-    const director = null
+  const { directorId } = useParams();
 
-    if (!director) {
-        return <h2>Director not found.</h2>
-    }
+  const director = directors.find(
+    (director) => director.id === Number(directorId)
+  );
 
-    return (
-        <div>
-        <h2>{director.name}</h2>
-        <p>{director.bio}</p>
-        <h3>Movies:</h3>
-        <ul>
-            {director.movies.map((movie) => (
-            <li key={movie.id}>
-                <a>{movie.title}</a>
-            </li>
-            ))}
-        </ul>
-        <Link to={`movies/new`}>Add New Movie</Link>
-        {/* Movie compoenents should render here depending on route */}
-        </div>
-    )
+  if (!director) {
+    return <h2>Director not found.</h2>;
+  }
+
+  return (
+    <div>
+      <h2>{director.name}</h2>
+      <p>{director.bio}</p>
+
+      <h3>Movies:</h3>
+      <ul>
+        {director.movies.map((movie) => (
+          <li key={movie.id}>
+            <Link to={`movies/${movie.id}`}>{movie.title}</Link>
+          </li>
+        ))}
+      </ul>
+
+      <Link to="movies/new">Add New Movie</Link>
+
+      <Outlet />
+    </div>
+  );
 }
 
-export default DirectorCard
+export default DirectorCard;
